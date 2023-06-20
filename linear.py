@@ -56,8 +56,6 @@ if choice == 'Mục tiêu của mô hình':
 elif choice == 'Giới thiệu Chi nhánh':
     st.subheader("Ban lãnh đạo các thời kỳ")
     st.write("##### 1. Các hình ảnh hoạt động của CN")
-    st.dataframe(df.head(3))
-    st.dataframe(df.tail(3))  
     st.image("LSM_1.png")
 
 
