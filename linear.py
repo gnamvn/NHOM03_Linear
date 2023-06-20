@@ -1,18 +1,20 @@
+#thêm vào các thư viện
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
+#chia dl thành training data và test data train_test_split
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import streamlit as st
 
 df = pd.read_csv("credit access.csv", encoding='latin-1')
 
-st.title("Hồi quy tuyến tính")
-st.write("## Dự báo giá trị vay vốn của nông hộ")
+st.title("Tiện ích vay vốn cá nhân nhóm 03")
+st.write("## Dự báo giá trị vay vốn của khách hàng cá nhân")
 
-uploaded_file = st.file_uploader("Choose a file", type=['csv'])
+uploaded_file = st.file_uploader("Xin mời chọn tệp của bạn", type=['csv'])
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file, encoding='latin-1')
     df.to_csv("data.csv", index = False)
@@ -21,13 +23,14 @@ X = df.drop(columns=['giatri'])
 y = df['giatri']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state= 12)
-
+#sử dụng thuật toán
 model = LinearRegression()
-
+#đào tạo
 model.fit(X_train, y_train)
 
 yhat_test = model.predict(X_test)
 
+#mức độ giải thích đo lường các biến đầu vào cho ra các giá trị đầu ra
 
 score_train=model.score(X_train, y_train)
 score_test=model.score(X_test, y_test)
@@ -38,7 +41,7 @@ rmse=mean_squared_error(y_test, yhat_test, squared=False)
 mae=mean_absolute_error(y_test, yhat_test)
 
 
-menu = ["Mục tiêu của mô hình", "Xây dựng mô hình", "Sử dụng mô hình để dự báo"]
+menu = ["Mục tiêu của mô hình", "Giới thiệu Chi nhánh", "Xây dựng mô hình", "Sử dụng mô hình để dự báo"]
 choice = st.sidebar.selectbox('Danh mục tính năng', menu)
 
 if choice == 'Mục tiêu của mô hình':    
@@ -46,9 +49,16 @@ if choice == 'Mục tiêu của mô hình':
     st.write("""
     ###### Mô hình được xây dựng để dự báo giá trị vay vốn của nông hộ dựa trên các biến đặc điểm chủ hộ, điều kiện của nông hộ.
     """)  
-    st.write("""###### Mô hình sử dụng thuật toán LinearRegression""")
+    st.write("""###### Mô hình sử dụng thuật toán LinearRegression của nhóm 03""")
     st.image("LSM.png")
     st.image("LSM_1.png")
+
+elif choice == 'Giới thiệu Chi nhánh':
+    st.subheader("Ban lãnh đạo các thời kỳ")
+    st.write("##### 1. Các hình ảnh hoạt động của CN")
+    st.dataframe(df.head(3))
+    st.dataframe(df.tail(3))  
+
 
 elif choice == 'Xây dựng mô hình':
     st.subheader("Xây dựng mô hình")
@@ -89,13 +99,13 @@ elif choice == 'Sử dụng mô hình để dự báo':
         TN = st.number_input('Insert TN')
         SPT = st.number_input('Insert SPT')
         GTC = st.number_input('Insert GTC')
-        GD = st.number_input('Insert GD')
-        TCH = st.number_input('Insert TCH')
-        GT = st.number_input('Insert GT')
-        DV = st.number_input('Insert DV')
+        #GD = st.number_input('Insert GD')
+        #TCH = st.number_input('Insert TCH')
+        #GT = st.number_input('Insert GT')
+        #DV = st.number_input('Insert DV')
         VPCT = st.number_input('Insert VPCT')
         LS = st.number_input('Insert LS')
-        lines={'giatri':[git],'DT':[DT],'TN':[TN],'SPT':[SPT],'GTC':[GTC],'GD':[GD],'TCH':[TCH],'GT':[GT],'DV':[DV],'VPCT':[VPCT],'LS':[LS]}
+        lines={'giatri':[git],'DT':[DT],'TN':[TN],'SPT':[SPT],'GTC':[GTC],'VPCT':[VPCT],'LS':[LS]}
         lines=pd.DataFrame(lines)
         st.dataframe(lines)
         flag = True
